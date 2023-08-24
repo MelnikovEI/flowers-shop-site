@@ -17,7 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from shop import views
+
 urlpatterns = [
+    path('', views.index),
+    path('card/', views.card),
+    path('catalog/', views.catalog),
+    path('consultation/', views.consultation),
+    path('order/', views.order),
+    path('order-step/', views.order_step),
+    path('quiz/', views.quiz),
+    path('quiz-step/', views.quiz_step),
+    path('result/', views.result),
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
