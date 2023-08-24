@@ -1,27 +1,40 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-# from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
 
 
-class Client(models.Model):
-    pass
-    # firstname = models.CharField('Имя', max_length=50)
-    # lastname = models.CharField('Фамилия', max_length=50)
-    # phone_number = PhoneNumberField('Номер телефона', region='RU')
+class UserRole(models.Model):
+    class Roles(models.IntegerChoices):
+        CLIENT=1, 'Клиент'
+        COURIER=2, 'Курьер'
+        FLORIST=3, 'Флорист'
+
+    role = models.IntegerField(
+        choices=Roles.choices,
+        unique=True,
+        default=Roles.CLIENT
+    )
+
+    class Meta:
+        verbose_name = 'Роль пользователя'
+        verbose_name_plural = 'Роли пользователей'
+
+    def __str__(self):
+        return self.get_role_display()
 
 
-class Courier(models.Model):
-    pass
-    # firstname = models.CharField('Имя', max_length=50)
-    # lastname = models.CharField('Фамилия', max_length=50)
-    # phone_number = PhoneNumberField('Номер телефона', region='RU')
+class ShopUser(models.Model):
+    user =  models.OneToOneField(User, related_name='shop_user', on_delete=models.CASCADE)
+    phone_number = PhoneNumberField('Номер телефона', region='RU')
+    roles = models.ManyToManyField(UserRole, verbose_name='Роли', related_name='shop_users')
 
+    class Meta:
+        verbose_name = 'Пользователь магазина'
+        verbose_name_plural = 'Пользователи магазина'
 
-class Florist(models.Model):
-    pass
-    # firstname = models.CharField('Имя', max_length=50)
-    # lastname = models.CharField('Фамилия', max_length=50)
-    # phone_number = PhoneNumberField('Номер телефона', region='RU')
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
 
 
 class Situation(models.Model):
@@ -91,23 +104,26 @@ class Order(models.Model):
         # blank=True, null=True
     )
     client = models.ForeignKey(
-        Client,
+        ShopUser,
         on_delete=models.PROTECT,
-        related_name='orders',
+        related_name='client_orders',
         verbose_name='клиент',
+        limit_choices_to={'roles__role':UserRole.Roles.CLIENT}
     )
     courier = models.ForeignKey(
-        Courier,
+        ShopUser,
         on_delete=models.SET_NULL,
-        related_name='orders',
         verbose_name='курьер',
+        related_name='courier_orders',
+        limit_choices_to={'roles__role': UserRole.Roles.COURIER},
         blank=True, null=True
     )
     florist = models.ForeignKey(
-        Florist,
+        ShopUser,
         on_delete=models.SET_NULL,
-        related_name='orders',
         verbose_name='флорист',
+        related_name='florist_orders',
+        limit_choices_to={'roles__role': UserRole.Roles.FLORIST},
         blank=True, null=True
     )
     address = models.CharField('Адрес доставки', max_length=100)

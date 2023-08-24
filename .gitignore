@@ -1,6 +1,5 @@
 bundles/**
 node_modules/
-media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -228,3 +227,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 staticfiles/
+venv/
