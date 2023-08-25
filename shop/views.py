@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from shop.models import Product
+from shop.serializers import ProductSerializer
 
 
 def index(request):
@@ -10,7 +12,9 @@ def card(request):
 
 
 def catalog(request):
-    return render(request, template_name='catalog.html', context={})
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    return render(request, template_name='catalog.html', context={'products': serializer.data})
 
 
 def consultation(request):
