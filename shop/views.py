@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.template.defaultfilters import random
+
 from shop.models import Product, Situation, PriceChoices
 from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer
 
@@ -42,10 +44,9 @@ def quiz_step(request, situation_id):
     )
 
 
-def result(request, situation_id, price_limit_id,):
-    # TODO: выбрать букет, соответствующий заданным критериям
-    product = get_object_or_404(Product, pk=1)
-    serializer = ProductSerializer(product)
+def result(request, situation_id, price_limit_id):
+    products = Product.objects.filtered(situation_id, price_limit_id)
+    serializer = ProductSerializer(random(products))
     return render(request, template_name='result.html', context={'product': serializer.data})
 
 

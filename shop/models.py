@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -52,6 +53,15 @@ class Situation(models.Model):
         return self.name
 
 
+class ProductQuerySet(models.QuerySet):
+    def filtered(self, situation_id, price_limit_id):
+        price_limit = get_object_or_404(PriceChoices, pk=price_limit_id)
+        min_price = price_limit.lower_limit
+        max_price = price_limit.upper_limit
+        filtered_products = self.filter(situation__pk=situation_id, price__gte=min_price, price__lte=max_price)
+        return filtered_products
+
+
 class Product(models.Model):
     situation = models.ManyToManyField(
         Situation,
@@ -77,7 +87,8 @@ class Product(models.Model):
         max_length=1000,
         blank=True,
     )
-    # objects = ProductQuerySet.as_manager()
+
+    objects = ProductQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'товар'
