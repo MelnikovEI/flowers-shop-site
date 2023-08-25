@@ -6,9 +6,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class UserRole(models.Model):
     class Roles(models.IntegerChoices):
-        CLIENT=1, 'Клиент'
-        COURIER=2, 'Курьер'
-        FLORIST=3, 'Флорист'
+        CLIENT = 1, 'Клиент'
+        COURIER = 2, 'Курьер'
+        FLORIST = 3, 'Флорист'
 
     role = models.IntegerField(
         choices=Roles.choices,
@@ -74,7 +74,7 @@ class Product(models.Model):
     )
     description = models.TextField(
         'описание',
-        max_length=200,
+        max_length=500,
         blank=True,
     )
     # objects = ProductQuerySet.as_manager()
@@ -101,7 +101,6 @@ class Order(models.Model):
         Product,
         related_name='orders',
         verbose_name='продукт',
-        # blank=True, null=True
     )
     client = models.ForeignKey(
         ShopUser,
