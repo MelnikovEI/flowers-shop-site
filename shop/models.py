@@ -74,7 +74,7 @@ class Product(models.Model):
     )
     description = models.TextField(
         'описание',
-        max_length=500,
+        max_length=1000,
         blank=True,
     )
     # objects = ProductQuerySet.as_manager()
