@@ -10,7 +10,6 @@ def index(request):
 def card(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     serializer = ProductSerializer(product)
-    print(serializer.data)
     return render(request, template_name='card.html', context={'product': serializer.data})
 
 
@@ -32,15 +31,15 @@ def order_step(request):
     return render(request, template_name='order-step.html', context={})
 
 
+def result(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    serializer = ProductSerializer(product)
+    return render(request, template_name='result.html', context={'product': serializer.data})
+
+
 def quiz(request):
     return render(request, template_name='quiz.html', context={})
 
 
 def quiz_step(request):
     return render(request, template_name='quiz-step.html', context={})
-
-
-def result(request):
-    return render(request, template_name='result.html', context={})
-
-
