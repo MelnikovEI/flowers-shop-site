@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from shop.models import Product
-from shop.serializers import ProductSerializer
+from shop.models import Product, Situation
+from shop.serializers import ProductSerializer, SituationSerializer
 
 
 def index(request):
@@ -19,16 +19,18 @@ def catalog(request):
     return render(request, template_name='catalog.html', context={'products': serializer.data})
 
 
-def consultation(request):
-    return render(request, template_name='consultation.html', context={})
-
-
-def order(request, product_id):
-    return render(request, template_name='order.html', context={})
-
-
 def order_step(request):
     return render(request, template_name='order-step.html', context={})
+
+
+def quiz(request):
+    situations = Situation.objects.all()
+    serializer = SituationSerializer(situations, many=True)
+    return render(request, template_name='quiz.html', context={'situations': serializer.data})
+
+
+def quiz_step(request, situation_id):
+    return render(request, template_name='quiz-step.html', context={})
 
 
 def result(request, product_id):
@@ -37,9 +39,9 @@ def result(request, product_id):
     return render(request, template_name='result.html', context={'product': serializer.data})
 
 
-def quiz(request):
-    return render(request, template_name='quiz.html', context={})
+def consultation(request):
+    return render(request, template_name='consultation.html', context={})
 
 
-def quiz_step(request):
-    return render(request, template_name='quiz-step.html', context={})
+def order(request, product_id):
+    return render(request, template_name='order.html', context={})
