@@ -162,8 +162,8 @@ class PriceChoices(models.Model):
         unique=True,
         max_length=50
     )
-    lower_limit = models.PositiveSmallIntegerField('Минимальная цена')
-    upper_limit = models.PositiveSmallIntegerField('Максимальная цена')
+    lower_limit = models.PositiveIntegerField('Минимальная цена')
+    upper_limit = models.PositiveIntegerField('Максимальная цена')
 
     class Meta:
         verbose_name = 'Фильтр цен'
