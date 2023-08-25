@@ -13,5 +13,5 @@ urlpatterns = [
     path('order-step/', views.order_step, name='order_step'),
     path('quiz/', views.quiz, name='quiz'),
     path('quiz-step/<int:situation_id>', views.quiz_step, name='quiz_step'),
-    path('result/<int:product_id>', views.result, name='result'),
+    path('result/<int:situation_id><int:price_limit_id>', views.result, name='result'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

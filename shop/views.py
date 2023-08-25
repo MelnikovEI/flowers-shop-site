@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from shop.models import Product, Situation
-from shop.serializers import ProductSerializer, SituationSerializer
+from shop.models import Product, Situation, PriceChoices
+from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer
 
 
 def index(request):
@@ -30,11 +30,21 @@ def quiz(request):
 
 
 def quiz_step(request, situation_id):
-    return render(request, template_name='quiz-step.html', context={})
+    price_choices = PriceChoices.objects.all()
+    serializer = PriceChoicesSerializer(price_choices, many=True)
+    return render(
+        request,
+        template_name='quiz-step.html',
+        context={
+            'situation_id': situation_id,
+            'price_choices': serializer.data
+        }
+    )
 
 
-def result(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
+def result(request, situation_id, price_limit_id,):
+    # TODO: выбрать букет, соответствующий заданным критериям
+    product = get_object_or_404(Product, pk=1)
     serializer = ProductSerializer(product)
     return render(request, template_name='result.html', context={'product': serializer.data})
 

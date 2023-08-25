@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-
-from shop.models import Order, Situation, Product, ShopUser, UserRole
+from shop.models import Order, Situation, Product, ShopUser, UserRole, PriceChoices
 
 
 class OrderInline(admin.TabularInline):
@@ -28,6 +27,7 @@ class UserAdmin(BaseUserAdmin):
     def get_roles(self, instance: User):
         return list(instance.shop_user.roles.all())
 
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
@@ -43,9 +43,13 @@ class ProductAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src="{instance.image.url}" style="max-height: 200px;">')
 
 
-
 @admin.register(Situation)
 class SituationAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PriceChoices)
+class PriceChoicesAdmin(admin.ModelAdmin):
     pass
 
 

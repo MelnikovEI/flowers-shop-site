@@ -25,7 +25,7 @@ class UserRole(models.Model):
 
 
 class ShopUser(models.Model):
-    user =  models.OneToOneField(User, related_name='shop_user', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='shop_user', on_delete=models.CASCADE)
     phone_number = PhoneNumberField('Номер телефона', region='RU')
     roles = models.ManyToManyField(UserRole, verbose_name='Роли', related_name='shop_users')
 
@@ -145,4 +145,18 @@ class Order(models.Model):
         return f"{self.client} {self.address}"
 
 
+class PriceChoices(models.Model):
+    title = models.CharField(
+        'Название',
+        unique=True,
+        max_length=50
+    )
+    lower_limit = models.PositiveSmallIntegerField('Минимальная цена')
+    upper_limit = models.PositiveSmallIntegerField('Максимальная цена')
 
+    class Meta:
+        verbose_name = 'Фильтр цен'
+        verbose_name_plural = 'Фильтры цен'
+
+    def __str__(self):
+        return self.title
