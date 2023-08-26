@@ -118,7 +118,7 @@ class Order(models.Model):
         on_delete=models.PROTECT,
         related_name='client_orders',
         verbose_name='клиент',
-        limit_choices_to={'roles__role':UserRole.Roles.CLIENT}
+        limit_choices_to={'roles__role': UserRole.Roles.CLIENT}
     )
     courier = models.ForeignKey(
         ShopUser,

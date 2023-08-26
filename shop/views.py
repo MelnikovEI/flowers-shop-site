@@ -1,8 +1,10 @@
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import random
+from rest_framework.decorators import api_view
 
 from shop.models import Product, Situation, PriceChoices
-from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer
+from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer
 
 
 def index(request):
@@ -19,10 +21,6 @@ def catalog(request):
     products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)
     return render(request, template_name='catalog.html', context={'products': serializer.data})
-
-
-def order_step(request):
-    return render(request, template_name='order-step.html', context={})
 
 
 def quiz(request):
@@ -55,4 +53,15 @@ def consultation(request):
 
 
 def order(request, product_id):
-    return render(request, template_name='order.html', context={})
+    product = get_object_or_404(Product, pk=product_id)
+    serializer = ProductSerializer(product)
+    return render(request, template_name='order.html', context={'product': serializer.data})
+
+
+@transaction.atomic
+@api_view(['POST'])
+def order_step(request, product_id):
+    serializer = OrderSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save(product_id=product_id)
+    return render(request, template_name='order-step.html', context={})
