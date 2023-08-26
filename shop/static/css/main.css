@@ -22,6 +22,10 @@ a, button {
 	transition: all .2s ease;
 
 }
+.silent_link {
+	color: inherit;
+	text-decoration: inherit;
+}
 input::placeholder {
 	color: rgba(0, 0, 0, .3);
 }
