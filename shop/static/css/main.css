@@ -73,6 +73,11 @@ input::placeholder {
 	align-items: center;
 	justify-content: space-between;
 }
+.ficb2 {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;	
+}
 .ficc {
 	display: flex;
 	align-items: center;
