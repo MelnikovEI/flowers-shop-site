@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from shop.models import Order, Situation, Product, ShopUser, UserRole, PriceChoices
+from shop.models import Order, Situation, Product, ShopUser, UserRole, PriceChoices, Consultation
 
 
 class OrderInline(admin.TabularInline):
@@ -73,4 +73,9 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(UserRole)
 class UserRoleAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Consultation)
+class ConsultationAdmin(admin.ModelAdmin):
     pass

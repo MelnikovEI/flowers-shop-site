@@ -171,3 +171,14 @@ class PriceChoices(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Consultation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user_custom_name = models.CharField('Имя в заявке', max_length=50, blank=True)
+    date_created = models.DateTimeField('Дата и время регистрации', auto_now_add=True)
+    done = models.BooleanField('Отработана', default=False)
+
+    class Meta:
+        verbose_name='Заявка на консультацию'
+        verbose_name_plural = 'Заявки на консультацию'
