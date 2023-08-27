@@ -4,6 +4,7 @@ from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import random
 from rest_framework.decorators import api_view
+from django.http import HttpRequest, HttpResponse
 
 from shop.models import Product, Situation, PriceChoices, Order
 from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer
@@ -72,3 +73,7 @@ def order_step(request, product_id):
     serializer.is_valid(raise_exception=True)
     serializer.save(product_id=product_id)
     return render(request, template_name='order-step.html', context={})
+
+
+def stats(request):
+    return render(request, template_name='stats.html', context={})

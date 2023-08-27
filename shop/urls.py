@@ -14,5 +14,6 @@ urlpatterns = [
     path('quiz/', views.quiz, name='quiz'),
     path('quiz-step/<int:situation_id>', views.quiz_step, name='quiz_step'),
     path('result/<int:situation_id><int:price_limit_id>', views.result, name='result'),
+    path('stats/', views.stats, name='stats'),
     path('api-auth/', include('rest_framework.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
