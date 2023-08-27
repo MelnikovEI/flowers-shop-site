@@ -57,7 +57,7 @@ def order(request, product_id):
     serializer = ProductSerializer(product)
     return render(
         request, template_name='order.html',
-        context={'product': serializer.data, 'delivery_ranges': Order.DeliveryTimeRanage.choices}
+        context={'product': serializer.data, 'delivery_ranges': Order.DeliveryTimeRange.choices}
     )
 
 
@@ -65,8 +65,6 @@ def order(request, product_id):
 @api_view(['POST'])
 def order_step(request, product_id):
     serializer = OrderSerializer(data=request.data)
-    print(f'Данные из запроса: {request.data}')
     serializer.is_valid(raise_exception=True)
-    print(f'Данные из сериализатора: {serializer.validated_data}')
     serializer.save(product_id=product_id)
     return render(request, template_name='order-step.html', context={})

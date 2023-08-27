@@ -105,7 +105,7 @@ class Order(models.Model):
         DELIVER = 3, 'Доставить'
         FINISHED = 4, 'Выполнен'
 
-    class DeliveryTimeRanage(models.IntegerChoices):
+    class DeliveryTimeRange(models.IntegerChoices):
         AS_POSSIBLE = 0, 'Как можно скорее'
         RANGE_1 = 1, 'c 10:00 до 12:00'
         RANGE_2 = 2, 'c 12:00 до 14:00'
@@ -153,8 +153,8 @@ class Order(models.Model):
     delivered_at = models.DateTimeField('Доставлен', null=True, blank=True)
 
     delivery_time_range = models.IntegerField(
-        choices=DeliveryTimeRanage.choices,
-        default=DeliveryTimeRanage.AS_POSSIBLE,
+        choices=DeliveryTimeRange.choices,
+        default=DeliveryTimeRange.AS_POSSIBLE,
         verbose_name='Диапазон времени доставки',
     )
 

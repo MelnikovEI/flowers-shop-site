@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework.fields import CharField
 from rest_framework.serializers import ModelSerializer, Serializer
-from shop.models import Product, Situation, PriceChoices, Order, ShopUser
+from shop.models import Product, Situation, PriceChoices, Order, ShopUser, UserRole
 from django.contrib.auth.models import User
 
 
@@ -32,15 +32,23 @@ class OrderSerializer(Serializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        user = User.objects.create(
-            username=validated_data['phone_number'],
-            first_name=validated_data['client_name'],
-            password=User.objects.make_random_password()
+        user, created = User.objects.get_or_create(
+            username=str(validated_data['phone_number']),
+            defaults={
+                'first_name': validated_data['client_name'],
+                'password': User.objects.make_random_password(),
+            }
         )
-        shop_user = ShopUser.objects.create(user=user, phone_number=validated_data['phone_number'])
+        shop_user, created = ShopUser.objects.get_or_create(
+            user=user,
+            defaults={
+                'phone_number': validated_data['phone_number'],
+            }
+        )
+        shop_user.roles.add(get_object_or_404(UserRole, role=1))
         product = get_object_or_404(Product, pk=validated_data['product_id'])
         order = Order.objects.create(client=shop_user, address=validated_data['address'])
-
+        order.product.add(product)
         return order
     """
     def update(self, instance, validated_data):
