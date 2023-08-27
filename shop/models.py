@@ -104,6 +104,15 @@ class Order(models.Model):
         ASSEMBLY = 2, 'Собрать'
         DELIVER = 3, 'Доставить'
         FINISHED = 4, 'Выполнен'
+
+    class DeliveryTimeRanage(models.IntegerChoices):
+        AS_POSSIBLE = 0, 'Как можно скорее'
+        RANGE_1 = 1, 'c 10:00 до 12:00'
+        RANGE_2 = 2, 'c 12:00 до 14:00'
+        RANGE_3 = 3, 'c 14:00 до 16:00'
+        RANGE_4 = 4, 'c 16:00 до 18:00'
+        RANGE_5 = 5, 'c 18:00 до 20:00'
+
     status = models.IntegerField(
         choices=Statuses.choices,
         default=Statuses.PENDING,
@@ -142,6 +151,12 @@ class Order(models.Model):
     called_at = models.DateTimeField('Звонок совершён', null=True, blank=True)
     assembled_at = models.DateTimeField('Собран', null=True, blank=True)
     delivered_at = models.DateTimeField('Доставлен', null=True, blank=True)
+
+    delivery_time_range = models.IntegerField(
+        choices=DeliveryTimeRanage.choices,
+        default=DeliveryTimeRanage.AS_POSSIBLE,
+        verbose_name='Диапазон времени доставки',
+    )
 
     # objects = OrderQuerySet.as_manager()
 
@@ -182,3 +197,4 @@ class Consultation(models.Model):
     class Meta:
         verbose_name='Заявка на консультацию'
         verbose_name_plural = 'Заявки на консультацию'
+

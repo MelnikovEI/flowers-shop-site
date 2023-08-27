@@ -55,7 +55,7 @@ class PriceChoicesAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ['delivery_time_range', 'created_at']
     # readonly_fields = ['created_at', ]
     # fields = (
     #     'address',

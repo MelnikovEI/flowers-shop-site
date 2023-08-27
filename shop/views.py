@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import random
 from rest_framework.decorators import api_view
 
-from shop.models import Product, Situation, PriceChoices
+from shop.models import Product, Situation, PriceChoices, Order
 from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer
 
 
@@ -55,13 +55,18 @@ def consultation(request):
 def order(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     serializer = ProductSerializer(product)
-    return render(request, template_name='order.html', context={'product': serializer.data})
+    return render(
+        request, template_name='order.html',
+        context={'product': serializer.data, 'delivery_ranges': Order.DeliveryTimeRanage.choices}
+    )
 
 
 @transaction.atomic
 @api_view(['POST'])
 def order_step(request, product_id):
     serializer = OrderSerializer(data=request.data)
+    print(f'Данные из запроса: {request.data}')
     serializer.is_valid(raise_exception=True)
+    print(f'Данные из сериализатора: {serializer.validated_data}')
     serializer.save(product_id=product_id)
     return render(request, template_name='order-step.html', context={})
