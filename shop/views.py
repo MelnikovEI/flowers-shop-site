@@ -9,10 +9,14 @@ from shop.models import Product, Situation, PriceChoices, Order
 from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer
 
 
-def index(request):
+def index(request, alert: str = None):
     random_products_ids = Product.objects.all().order_by('?')[:3].values_list('id', flat=True)
     random_products = Product.objects.filter(id__in=random_products_ids)
-    return render(request, template_name='index.html', context={'products_for_main': random_products})
+    if not alert:
+        return render(request, template_name='index.html', context={'products_for_main': random_products})
+    else:
+        return render(request, template_name='index.html',
+                      context={'products_for_main': random_products, 'alert': alert})
 
 
 def card(request, product_id):
@@ -68,10 +72,13 @@ def order(request, product_id):
 @transaction.atomic
 @api_view(['POST'])
 def order_step(request, product_id):
+    stage = request.POST.get('stage')
+    if stage == 'payment':
+        return index(request, 'Ваш заказ оплачен. С вами свяжутся в ближайшее время на подтверждения доставки')
     serializer = OrderSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save(product_id=product_id)
-    return render(request, template_name='order-step.html', context={})
+    return render(request, template_name='order-step.html', context={'product_id':product_id})
 
 
 def stats(request):

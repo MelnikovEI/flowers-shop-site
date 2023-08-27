@@ -1,6 +1,13 @@
 {% extends 'base-top-foot-consult-contacts.html' %}
 {% load static %}
+{% block start_script %}
+	{% if alert %}
+		<script type="text/javascript">
+			window.onload=function(){alert('{{alert}}')};
 
+		</script>
+	{% endif %}
+{% endblock %}
 {% block content %}
 	<div class="mainBg">
 		<section id="banner">

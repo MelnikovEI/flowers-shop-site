@@ -1,6 +1,5 @@
 {% extends 'base-top-foot.html' %}
 {% load static %}
-
 {% block content %}
 	<section id="orderStep">
 		<div class="container">
@@ -8,7 +7,7 @@
 				<div class="order__block">
 					<div class="order_items">
 						<div class="title">Оплата</div>
-						<form action="/" method="post" class="order__form orderStep_form">
+						<form action="{% url 'order_step' product_id %}" method="post" class="order__form orderStep_form">
 							{% csrf_token %}
 							<div class="order__form_block">
 								<div class="order__form_items">
@@ -18,9 +17,9 @@
 										<input type="text" name="cardMm" class="order__form_input orderStep_form_input" placeholder="ММ" required>
 										<input type="text" name="cardGg" class="order__form_input orderStep_form_input" placeholder="ГГ" required>
 									</div>
-									
 									<input type="text" name="cardFname" class="order__form_input orderStep_form_input" placeholder="Имя владельца" required>
 									<input type="text" name="cardCvc" class="order__form_input orderStep_form_input" placeholder="CVC" required>
+									<input type="hidden" name="stage" value="payment">
 								</div>
 								<div class="order__form_items">
 									<div class="order__form_intro">Ваш e-mail (необязательно)</div>
