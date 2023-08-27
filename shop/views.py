@@ -79,7 +79,7 @@ def order(request, product_id):
 def order_step(request, product_id):
     stage = request.POST.get('stage')
     if stage == 'payment':
-        return index(request, 'Ваш заказ оплачен. С вами свяжутся в ближайшее время на подтверждения доставки')
+        return index(request, 'Ваш заказ оплачен. С вами свяжутся в ближайшее время для подтверждения доставки')
     serializer = OrderSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save(product_id=product_id)
