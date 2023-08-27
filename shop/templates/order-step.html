@@ -8,7 +8,8 @@
 				<div class="order__block">
 					<div class="order_items">
 						<div class="title">Оплата</div>
-						<form action="#" class="order__form orderStep_form">
+						<form action="/" method="post" class="order__form orderStep_form">
+							{% csrf_token %}
 							<div class="order__form_block">
 								<div class="order__form_items">
 									<div class="order__form_intro">номер карты</div>

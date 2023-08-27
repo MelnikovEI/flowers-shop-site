@@ -1,10 +1,9 @@
 import random
-
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import random
 from rest_framework.decorators import api_view
-from django.http import HttpRequest, HttpResponse
+
 
 from shop.models import Product, Situation, PriceChoices, Order
 from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer
