@@ -52,8 +52,8 @@ def quiz_step(request, situation_id):
 
 def result(request, situation_id, price_limit_id):
     products = Product.objects.filtered(situation_id, price_limit_id)
-    serializer = ProductSerializer(random(products))
-    return render(request, template_name='result.html', context={'product': serializer.data})
+    serializer = ProductSerializer(products, many=True)
+    return render(request, template_name='result.html', context={'products': serializer.data})
 
 
 @transaction.atomic
