@@ -66,3 +66,6 @@ class UserRoleAdmin(admin.ModelAdmin):
 @admin.register(Consultation)
 class ConsultationAdmin(admin.ModelAdmin):
     readonly_fields = ['user', 'date_created']
+    list_filter = [
+        'done',
+    ]
