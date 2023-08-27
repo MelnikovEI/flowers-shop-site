@@ -18,7 +18,7 @@
 							<div class="order__form_btns fic">
 								{% for delivery_range in delivery_ranges %}
 									<div class="order__form_radioBlock ">
-										<input type="radio" name="orderTime" id="radio{{delivery_range.0}}" value="{{delivery_range.1}}" class="order__form_radio" />
+										<input type="radio" name="delivery_time_range" id="radio{{delivery_range.0}}" value="{{delivery_range.0}}" class="order__form_radio" />
 										<label for="radio{{delivery_range.0}}" class="radioLable">{{delivery_range.1}}</label>
 									</div>
 								{% endfor %}
