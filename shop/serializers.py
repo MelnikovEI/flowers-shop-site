@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework.fields import CharField, IntegerField, ChoiceField
 from rest_framework.serializers import ModelSerializer, Serializer
-from shop.models import Product, Situation, PriceChoices, Order, ShopUser, UserRole
+from shop.models import Product, Situation, PriceChoices, Order, ShopUser, UserRole, Consultation
 from django.contrib.auth.models import User
 
 
@@ -23,6 +23,29 @@ class PriceChoicesSerializer(ModelSerializer):
     class Meta:
         model = PriceChoices
         fields = '__all__'
+
+
+class ConsultationSerializer(Serializer):
+    user_custom_name = CharField(max_length=50, required=False)
+    phone_number = PhoneNumberField(region='RU')
+
+    @transaction.atomic
+    def create(self, validated_data):
+        user, created = User.objects.get_or_create(
+            username=str(validated_data['phone_number']),
+            defaults={
+                'first_name': validated_data['user_custom_name'],
+                'password': User.objects.make_random_password(),
+            }
+        )
+        if not created:
+            user.first_name = validated_data['user_custom_name']
+            user.save(update_fields=['first_name'])
+        consultation = Consultation.objects.create(
+            user=user,
+            user_custom_name=validated_data['user_custom_name'],
+        )
+        return consultation
 
 
 class OrderSerializer(Serializer):
@@ -62,14 +85,3 @@ class OrderSerializer(Serializer):
         )
         order.product.add(product)
         return order
-    """
-    def update(self, instance, validated_data):
-        '''Update and return an existing `Snippet` instance, given the validated data.'''
-        instance.title = validated_data.get('title', instance.title)
-        instance.code = validated_data.get('code', instance.code)
-        instance.linenos = validated_data.get('linenos', instance.linenos)
-        instance.language = validated_data.get('language', instance.language)
-        instance.style = validated_data.get('style', instance.style)
-        instance.save()
-        return instance
-    """

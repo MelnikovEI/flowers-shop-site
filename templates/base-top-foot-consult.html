@@ -6,9 +6,14 @@
 		<div class="container">
 			<div class="consultation">
 				<div class="title consultation__title">Оставьте заявку на консультацию</div>
-				<form action="#" class="consultation__form">
-					<input type="text" name="fname" class="consultation__form_input" placeholder="Введите Имя" required>
-					<input type="text" name="tel" class="consultation__form_input" placeholder="+ 7 (999) 000 00 00" required>
+				<form action="{% url 'consultation' %}" method="post" class="consultation__form">
+					{% csrf_token %}
+					<input type="text" name="user_custom_name" class="consultation__form_input" placeholder="Введите Имя" required>
+					<input type="tel" pattern="[+]7\s?\d{3}\s?\d{3}\s?\d{2}\s?\d{2}" name="phone_number" class="consultation__form_input" placeholder="+ 7 999 000 00 00" required title="Формат: +7 777 777 77 77">
+					<div class="chekbox fic">
+						<input type="checkbox" class="singUpConsultation__ckekbox" checked required title="Согласитесь, пожалуйста, с политикой конфиденциальности">
+						<span class="chekbox__intro">Я согласен(а) с политикой конфидециоальности</span>
+					</div>
 					<button type="submit" class="consultation__form_btn">Отправить</button>
 				</form>
 			</div>

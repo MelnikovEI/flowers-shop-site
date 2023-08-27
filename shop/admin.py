@@ -56,19 +56,6 @@ class PriceChoicesAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ['delivery_time_range', 'created_at']
-    # readonly_fields = ['created_at', ]
-    # fields = (
-    #     'address',
-    #     'created_at',
-    #     ('called_at', 'delivered_at'),
-    #     ('status'),
-    # )
-    # list_display = [
-    #     'address',
-    # ]
-    # inlines = [
-    #     ProductInline,
-    # ]
 
 
 @admin.register(UserRole)
@@ -78,4 +65,4 @@ class UserRoleAdmin(admin.ModelAdmin):
 
 @admin.register(Consultation)
 class ConsultationAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ['user', 'date_created']

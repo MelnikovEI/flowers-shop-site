@@ -4,9 +4,9 @@ from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import random
 from rest_framework.decorators import api_view
 
-
 from shop.models import Product, Situation, PriceChoices, Order
-from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer
+from shop.serializers import ProductSerializer, SituationSerializer, PriceChoicesSerializer, OrderSerializer, \
+    ConsultationSerializer
 
 
 def index(request, alert: str = None):
@@ -56,7 +56,12 @@ def result(request, situation_id, price_limit_id):
     return render(request, template_name='result.html', context={'product': serializer.data})
 
 
+@transaction.atomic
+@api_view(['POST'])
 def consultation(request):
+    serializer = ConsultationSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
     return render(request, template_name='consultation.html', context={})
 
 

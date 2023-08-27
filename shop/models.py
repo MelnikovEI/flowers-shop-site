@@ -195,6 +195,8 @@ class Consultation(models.Model):
     done = models.BooleanField('Отработана', default=False)
 
     class Meta:
-        verbose_name='Заявка на консультацию'
+        verbose_name = 'Заявка на консультацию'
         verbose_name_plural = 'Заявки на консультацию'
 
+    def __str__(self):
+        return f"{self.user.username}"
