@@ -1,3 +1,5 @@
+import random
+
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import random
@@ -8,7 +10,9 @@ from shop.serializers import ProductSerializer, SituationSerializer, PriceChoice
 
 
 def index(request):
-    return render(request, template_name='index.html', context={})
+    random_products_ids = Product.objects.all().order_by('?')[:3].values_list('id', flat=True)
+    random_products = Product.objects.filter(id__in=random_products_ids)
+    return render(request, template_name='index.html', context={'products_for_main': random_products})
 
 
 def card(request, product_id):
