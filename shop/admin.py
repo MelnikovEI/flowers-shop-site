@@ -56,6 +56,20 @@ class PriceChoicesAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ['delivery_time_range', 'created_at']
+    list_filter = ['delivery_time_range', 'florist', 'courier']
+    # readonly_fields = ['created_at', ]
+    # fields = (
+    #     'address',
+    #     'created_at',
+    #     ('called_at', 'delivered_at'),
+    #     ('status'),
+    # )
+    # list_display = [
+    #     'address',
+    # ]
+    # inlines = [
+    #     ProductInline,
+    # ]
 
 
 @admin.register(UserRole)
