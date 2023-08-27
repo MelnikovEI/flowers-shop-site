@@ -56,7 +56,7 @@ class PriceChoicesAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ['delivery_time_range', 'created_at']
-    list_filter = ['delivery_time_range', 'florist', 'courier']
+    list_filter = ['status', 'delivery_time_range', 'florist', 'courier']
     # readonly_fields = ['created_at', ]
     # fields = (
     #     'address',
